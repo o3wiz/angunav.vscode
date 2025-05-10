@@ -8,6 +8,39 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand("angunav.navigateToTemplate", navigateToTemplate),
     vscode.commands.registerCommand("angunav.navigateToStyle", navigateToStyle),
   );
+
+  vscode.window.onDidChangeActiveTextEditor((editor) => {
+    if (editor?.document) {
+      updateContext(editor.document);
+    }
+  });
+}
+
+function isComponent(filePath: string): boolean {
+  const conf = getConfig();
+  return filePath.endsWith(conf.componentSuffix);
+}
+
+function isTemplate(filePath: string): boolean {
+  const conf = getConfig();
+  return filePath.endsWith(conf.templateSuffix);
+}
+
+function isStyle(filePath: string): boolean {
+  const conf = getConfig();
+  return filePath.endsWith(conf.styleSuffix);
+}
+
+function updateContext(doc: vscode.TextDocument) {
+  const component = isComponent(doc.fileName);
+  const template = isTemplate(doc.fileName);
+  const style = isStyle(doc.fileName);
+  // prettier-ignore
+  vscode.commands.executeCommand("setContext", "angunav.canNavigateToComponent", template || style);
+  // prettier-ignore
+  vscode.commands.executeCommand("setContext", "angunav.canNavigateToTemplate", component || style);
+  // prettier-ignore
+  vscode.commands.executeCommand("setContext", "angunav.canNavigateToStyle", component || template);
 }
 
 function stripSuffix(s: string, suffixes: Array<string>): string {

@@ -2,7 +2,7 @@
   "name": "angunav",
   "displayName": "angunav",
   "description": "Navigate between Angular component files (TS, HTML, CSS) with simple keyboard shortcuts.",
-  "version": "0.0.3",
+  "version": "0.1.3",
   "engines": {
     "vscode": "^1.100.0"
   },
@@ -47,15 +47,18 @@
     "commands": [
       {
         "command": "angunav.navigateToComponent",
-        "title": "Navigate to Component"
+        "title": "Angunav: Navigate to Component",
+        "enablement": "angunav.canNavigateToComponent"
       },
       {
         "command": "angunav.navigateToTemplate",
-        "title": "Navigate to Template"
+        "title": "Angunav: Navigate to Template",
+        "enablement": "angunav.canNavigateToTemplate"
       },
       {
         "command": "angunav.navigateToStyle",
-        "title": "Navigate to Style"
+        "title": "Angunav: Navigate to Style",
+        "enablement": "angunav.canNavigateToStyle"
       }
     ],
     "keybindings":[
