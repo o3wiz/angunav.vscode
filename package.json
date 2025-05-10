@@ -6,16 +6,72 @@
   "engines": {
     "vscode": "^1.100.0"
   },
+  "author": {
+    "name": "Daniel Aviv"
+  },
   "categories": [
+    "Keymaps",
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "workspaceContains:angular.json",
+    "onLanguage:typescript",
+    "onLanguage:html",
+    "onLanguage:css",
+    "onLanguage:scss",
+    "onLanguage:less"
+  ],
   "main": "./out/extension.js",
   "contributes": {
+    "configuration": {
+      "title": "Angunav Configuration",
+      "properties": {
+        "angunav.templateSuffix": {
+          "type": "string",
+          "default": ".component.html",
+          "description": "Suffix for template files"
+        },
+        "angunav.styleSuffix": {
+          "type": "string",
+          "default": ".component.css",
+          "description": "Suffix for style files"
+        },
+        "angunav.componentSuffix": {
+          "type": "string",
+          "default": ".component.ts",
+          "description": "Suffix for component files"
+        }
+      }
+    },
     "commands": [
       {
-        "command": "angunav.helloWorld",
-        "title": "Hello World"
+        "command": "angunav.navigateToComponent",
+        "title": "Navigate to Component"
+      },
+      {
+        "command": "angunav.navigateToTemplate",
+        "title": "Navigate to Template"
+      },
+      {
+        "command": "angunav.navigateToStyle",
+        "title": "Navigate to Style"
+      }
+    ],
+    "keybindings":[
+      {
+        "command": "angunav.navigateToComponent",
+        "key": "alt+c",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "angunav.navigateToTemplate",
+        "key": "alt+t",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "angunav.navigateToStyle",
+        "key": "alt+s",
+        "when": "editorTextFocus"
       }
     ]
   },

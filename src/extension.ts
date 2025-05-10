@@ -1,26 +1,63 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
-import * as vscode from 'vscode';
+import * as vscode from "vscode";
+import * as path from "path";
+import * as fs from "fs";
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "angunav" is now active!');
-
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	const disposable = vscode.commands.registerCommand('angunav.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from angunav!');
-	});
-
-	context.subscriptions.push(disposable);
+  // prettier-ignore
+  context.subscriptions.push(
+    vscode.commands.registerCommand("angunav.navigateToComponent", navigateToComponent),
+    vscode.commands.registerCommand("angunav.navigateToTemplate", navigateToTemplate),
+    vscode.commands.registerCommand("angunav.navigateToStyle", navigateToStyle),
+  );
+  // prettier-ignore-end
 }
 
-// This method is called when your extension is deactivated
+function getConfig() {
+  const config = vscode.workspace.getConfiguration("angunav");
+  return {
+    componentSuffix: config.get<string>("componentSuffix", ".component.ts"),
+    templateSuffix: config.get<string>("templateSuffix", ".component.html"),
+    styleSuffix: config.get<string>("styleSuffix", ".component.scss"),
+  };
+}
+
+async function navigateToComponent() {
+  const conf = getConfig();
+  navigateToFile(conf.componentSuffix);
+}
+
+async function navigateToTemplate() {
+  const conf = getConfig();
+  navigateToFile(conf.templateSuffix);
+}
+
+async function navigateToStyle() {
+  const conf = getConfig();
+  navigateToFile(conf.styleSuffix);
+}
+
+async function navigateToFile(targetSuffix: string) {
+  const editor = vscode.window.activeTextEditor;
+  if (!editor) {
+    vscode.window.showErrorMessage("No active editor!");
+    return false;
+  }
+
+  const currentFilePath = editor.document.uri.fsPath;
+  const basePath = currentFilePath.split(".", 1)[0];
+
+  const targetPath = `${basePath}.${targetSuffix}`;
+
+  if (!fs.existsSync(targetPath)) {
+    // prettier-ignore
+    vscode.window.showWarningMessage(`Couldn't find a matching file: ${targetPath}`);
+    return false;
+  }
+
+  const targetUri = vscode.Uri.file(targetPath);
+  await vscode.window.showTextDocument(targetUri);
+
+  return true;
+}
+
 export function deactivate() {}
