@@ -46,7 +46,6 @@ async function navigateToFile(targetSuffix: string) {
   const basePath = currentFilePath.split(".", 1)[0];
 
   const targetPath = `${basePath}.${targetSuffix}`;
-
   if (!fs.existsSync(targetPath)) {
     // prettier-ignore
     vscode.window.showWarningMessage(`Couldn't find a matching file: ${targetPath}`);
