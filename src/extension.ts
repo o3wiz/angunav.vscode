@@ -14,9 +14,9 @@ export function activate(context: vscode.ExtensionContext) {
 function getConfig() {
   const config = vscode.workspace.getConfiguration("angunav");
   return {
-    componentSuffix: config.get<string>("componentSuffix", ".component.ts"),
-    templateSuffix: config.get<string>("templateSuffix", ".component.html"),
-    styleSuffix: config.get<string>("styleSuffix", ".component.scss"),
+    componentSuffix: config.get<string>("componentSuffix")!,
+    templateSuffix: config.get<string>("templateSuffix")!,
+    styleSuffix: config.get<string>("styleSuffix")!,
   };
 }
 

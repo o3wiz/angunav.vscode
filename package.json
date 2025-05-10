@@ -28,17 +28,17 @@
       "properties": {
         "angunav.templateSuffix": {
           "type": "string",
-          "default": ".component.html",
+          "default": "component.html",
           "description": "Suffix for template files"
         },
         "angunav.styleSuffix": {
           "type": "string",
-          "default": ".component.css",
+          "default": "component.css",
           "description": "Suffix for style files"
         },
         "angunav.componentSuffix": {
           "type": "string",
-          "default": ".component.ts",
+          "default": "component.ts",
           "description": "Suffix for component files"
         }
       }
