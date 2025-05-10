@@ -10,6 +10,16 @@ export function activate(context: vscode.ExtensionContext) {
   );
 }
 
+function stripSuffix(s: string, suffixes: Array<string>): string {
+  for (const suffix of suffixes) {
+    if (s.endsWith(suffix)) {
+      return s.slice(0, -suffix.length);
+    }
+  }
+
+  return s;
+}
+
 function getConfig() {
   const config = vscode.workspace.getConfiguration("angunav");
   return {
@@ -47,7 +57,13 @@ async function navigateToFile(targetSuffix: string) {
     vscode.window.showInformationMessage(`You're already in the ${targetSuffix} file.`);
     return true;
   }
-  const basePath = currentFilePath.split(".", 1)[0];
+
+  const conf = getConfig();
+  const basePath = stripSuffix(currentFilePath, [
+    `.${conf.componentSuffix}`,
+    `.${conf.templateSuffix}`,
+    `.${conf.styleSuffix}`,
+  ]);
 
   const targetPath = `${basePath}.${targetSuffix}`;
   if (!fs.existsSync(targetPath)) {
