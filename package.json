@@ -2,13 +2,14 @@
   "name": "angunav",
   "displayName": "angunav",
   "description": "Navigate between Angular component files (TS, HTML, CSS) with simple keyboard shortcuts.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "engines": {
     "vscode": "^1.100.0"
   },
   "author": {
     "name": "Daniel Aviv"
   },
+  "repository": "https://github.com/o3wiz/angunav",
   "categories": [
     "Keymaps",
     "Other"

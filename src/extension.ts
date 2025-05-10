@@ -8,7 +8,6 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand("angunav.navigateToTemplate", navigateToTemplate),
     vscode.commands.registerCommand("angunav.navigateToStyle", navigateToStyle),
   );
-  // prettier-ignore-end
 }
 
 function getConfig() {
@@ -43,6 +42,11 @@ async function navigateToFile(targetSuffix: string) {
   }
 
   const currentFilePath = editor.document.uri.fsPath;
+  if (currentFilePath.endsWith(targetSuffix)) {
+    // prettier-ignore
+    vscode.window.showInformationMessage(`You're already in the ${targetSuffix} file.`);
+    return true;
+  }
   const basePath = currentFilePath.split(".", 1)[0];
 
   const targetPath = `${basePath}.${targetSuffix}`;
