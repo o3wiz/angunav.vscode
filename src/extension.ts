@@ -7,6 +7,8 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand("angunav.navigateToComponent", navigateToComponent),
     vscode.commands.registerCommand("angunav.navigateToTemplate", navigateToTemplate),
     vscode.commands.registerCommand("angunav.navigateToStyle", navigateToStyle),
+    vscode.commands.registerCommand("angunav.nextCyclicNavigation", navigateToNext),
+    vscode.commands.registerCommand("angunav.prevCyclicNavigation", navigateToPrev),
   );
 
   vscode.window.onDidChangeActiveTextEditor((editor) => {
@@ -75,6 +77,39 @@ async function navigateToTemplate() {
 async function navigateToStyle() {
   const conf = getConfig();
   navigateToFile(conf.styleSuffix);
+}
+
+async function navigateToNext() {
+  navigateCyclic(+1);
+}
+async function navigateToPrev() {
+  navigateCyclic(-1);
+}
+
+async function navigateCyclic(step: 1 | -1) {
+  const editor = vscode.window.activeTextEditor;
+  if (!editor) {
+    vscode.window.showErrorMessage("No active editor!");
+    return;
+  }
+
+  const conf = getConfig();
+  const order = [conf.componentSuffix, conf.templateSuffix, conf.styleSuffix];
+  const path = editor.document.uri.fsPath;
+  const i = order.findIndex((s) => path.endsWith(s));
+  if (i < 0) {
+    vscode.window.showWarningMessage("Not a tracked Angular file.");
+    return;
+  }
+
+  for (const hop of [1, 2]) {
+    const target = order[(i + step * hop + order.length) % order.length];
+    if (await navigateToFile(target)) return true;
+  }
+
+  vscode.window.showInformationMessage(
+    "No other related files to navigate to."
+  );
 }
 
 async function navigateToFile(targetSuffix: string) {
