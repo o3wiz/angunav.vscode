@@ -2,7 +2,7 @@
   "name": "angunav",
   "displayName": "angunav",
   "description": "Navigate between Angular component files (TS, HTML, CSS) with simple keyboard shortcuts.",
-  "version": "0.2.3",
+  "version": "0.2.0",
   "engines": {
     "vscode": "^1.100.0"
   },
